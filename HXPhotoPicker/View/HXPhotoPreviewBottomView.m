@@ -167,11 +167,22 @@
     HXPhotoPreviewBottomViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"DatePreviewBottomViewCellId" forIndexPath:indexPath];
     cell.selectColor = self.manager.configuration.previewBottomSelectColor ? : self.manager.configuration.themeColor;
     HXPhotoModel *model;
-    if ([UIView appearance].semanticContentAttribute == UISemanticContentAttributeForceRightToLeft) {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    NSArray *allLanguages = [defaults objectForKey:@"AppleLanguages"];
+
+    NSString *language = [allLanguages objectAtIndex:0];
+
+    NSLocaleLanguageDirection direction = [NSLocale characterDirectionForLanguage:language];
+    
+    if (direction == NSLocaleLanguageDirectionRightToLeft)
+    {
         model = self.modelArray[self.modelArray.count - 1 - indexPath.item];
     }else{
         model = self.modelArray[indexPath.item];
     }
+    
     cell.model = model;
     return cell;
 }

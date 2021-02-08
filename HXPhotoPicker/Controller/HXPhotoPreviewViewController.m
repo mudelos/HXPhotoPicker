@@ -188,12 +188,22 @@ HX_PhotoEditViewControllerDelegate
     if (!cell) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSIndexPath * indexPath;
-            if ([UIView appearance].semanticContentAttribute == UISemanticContentAttributeForceRightToLeft) {
+            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+            NSArray *allLanguages = [defaults objectForKey:@"AppleLanguages"];
+
+            NSString *language = [allLanguages objectAtIndex:0];
+
+            NSLocaleLanguageDirection direction = [NSLocale characterDirectionForLanguage:language];
+            
+            if (direction == NSLocaleLanguageDirectionRightToLeft)
+            {
                 indexPath = [NSIndexPath indexPathForItem:self.modelArray.count - 1 - self.currentModelIndex inSection:0];
             }else{
                 indexPath = [NSIndexPath indexPathForItem:self.currentModelIndex inSection:0];
             }
-            
+
             HXPhotoPreviewViewCell *tempCell = (HXPhotoPreviewViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
             self.tempCell = tempCell;
             [tempCell requestHDImage];
@@ -848,13 +858,23 @@ HX_PhotoEditViewControllerDelegate
     }];
     
     NSInteger index;
-    if ([UIView appearance].semanticContentAttribute == UISemanticContentAttributeForceRightToLeft) {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    NSArray *allLanguages = [defaults objectForKey:@"AppleLanguages"];
+
+    NSString *language = [allLanguages objectAtIndex:0];
+
+    NSLocaleLanguageDirection direction = [NSLocale characterDirectionForLanguage:language];
+    
+    if (direction == NSLocaleLanguageDirectionRightToLeft)
+    {
         index = self.modelArray.count - 1 - indexPath.item;
     }else{
         index = indexPath.item;
     }
     
-    HXPhotoModel *photoModel = self.modelArray[index];
+    HXPhotoModel *photoModel = [self.modelArray objectAtIndex:index];
     cell.model = photoModel;
     return cell;
 }
