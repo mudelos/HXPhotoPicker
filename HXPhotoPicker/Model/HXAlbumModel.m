@@ -30,20 +30,26 @@
             }
             [HXPhotoCommon photoCommon].cameraRollResult = nil;
         }
-        PHAssetCollection *assetCollection = [[PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[self.localIdentifier] options:nil] firstObject];
         
-        PHFetchOptions *options = [self options];
-        PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
-        self.assetResult = result;
-        self.count = result.count;
-        [HXPhotoCommon photoCommon].cameraRollResult = result;
-        [HXPhotoCommon photoCommon].selectType = self.selectType;
+        if (self.localIdentifier) {
+            PHAssetCollection *assetCollection = [[PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[self.localIdentifier] options:nil] firstObject];
+            
+            PHFetchOptions *options = [self options];
+            PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
+            self.assetResult = result;
+            self.count = result.count;
+            [HXPhotoCommon photoCommon].cameraRollResult = result;
+            [HXPhotoCommon photoCommon].selectType = self.selectType;
+        }
+
     }else {
         PHFetchOptions *options = [self options];
-        PHAssetCollection *assetCollection = [[PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[self.localIdentifier] options:nil] firstObject];
-        PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
-        self.assetResult = result;
-        self.count = result.count;
+        if (self.localIdentifier) {
+            PHAssetCollection *assetCollection = [[PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[self.localIdentifier] options:nil] firstObject];
+            PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
+            self.assetResult = result;
+            self.count = result.count;
+        }
     }
 }
 
