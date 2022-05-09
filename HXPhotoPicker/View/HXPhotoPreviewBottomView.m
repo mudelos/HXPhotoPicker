@@ -168,11 +168,9 @@
     cell.selectColor = self.manager.configuration.previewBottomSelectColor ? : self.manager.configuration.themeColor;
     HXPhotoModel *model;
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    NSArray *allLanguages = [defaults objectForKey:@"AppleLanguages"];
-
-    NSString *language = [allLanguages objectAtIndex:0];
+    NSArray *allLanguages = NSBundle.mainBundle.preferredLocalizations;
+    
+    NSString *language = allLanguages.firstObject;
 
     NSLocaleLanguageDirection direction = [NSLocale characterDirectionForLanguage:language];
     

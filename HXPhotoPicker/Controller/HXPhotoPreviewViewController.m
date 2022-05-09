@@ -189,11 +189,9 @@ HX_PhotoEditViewControllerDelegate
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             NSIndexPath * indexPath;
             
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-            NSArray *allLanguages = [defaults objectForKey:@"AppleLanguages"];
-
-            NSString *language = [allLanguages objectAtIndex:0];
+            NSArray *allLanguages = NSBundle.mainBundle.preferredLocalizations;
+            
+            NSString *language = allLanguages.firstObject;
 
             NSLocaleLanguageDirection direction = [NSLocale characterDirectionForLanguage:language];
             
@@ -859,11 +857,9 @@ HX_PhotoEditViewControllerDelegate
     
     NSInteger index;
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    NSArray *allLanguages = [defaults objectForKey:@"AppleLanguages"];
-
-    NSString *language = [allLanguages objectAtIndex:0];
+    NSArray *allLanguages = NSBundle.mainBundle.preferredLocalizations;
+    
+    NSString *language = allLanguages.firstObject;
 
     NSLocaleLanguageDirection direction = [NSLocale characterDirectionForLanguage:language];
     
