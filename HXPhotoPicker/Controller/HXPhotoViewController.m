@@ -1316,7 +1316,27 @@ HX_PhotoEditViewControllerDelegate
                 self.navigationController.delegate = previewVC;
                 [self.navigationController pushViewController:previewVC animated:YES];
             }else {
-                if ((cell.model.type == HXPhotoModelMediaTypePhotoGif)) {
+                if (cell.model.subType == HXPhotoModelMediaSubTypePhoto) {
+                    if (self.manager.configuration.useWxPhotoEdit) {
+                        HX_PhotoEditViewController *vc = [[HX_PhotoEditViewController alloc] initWithConfiguration:self.manager.configuration.photoEditConfigur];
+                        vc.photoModel = cell.model;
+                        vc.delegate = self;
+                        vc.onlyCliping = YES;
+                        vc.supportRotation = YES;
+                        vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+                        vc.modalPresentationCapturesStatusBarAppearance = YES;
+                        [self presentViewController:vc animated:YES completion:nil];
+                    }else {
+                        HXPhotoEditViewController *vc = [[HXPhotoEditViewController alloc] init];
+                        vc.isInside = YES;
+                        vc.model = cell.model;
+                        vc.delegate = self;
+                        vc.manager = self.manager;
+                        vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+                        vc.modalPresentationCapturesStatusBarAppearance = YES;
+                        [self presentViewController:vc animated:YES completion:nil];
+                    }
+                }else {
                     NSInteger currentIndex = [self.previewArray indexOfObject:cell.model];
                     HXPhotoPreviewViewController *previewVC = [[HXPhotoPreviewViewController alloc] init];
                     if (HX_IOS9Earlier) {
@@ -1328,40 +1348,6 @@ HX_PhotoEditViewControllerDelegate
                     previewVC.currentModelIndex = currentIndex;
                     self.navigationController.delegate = previewVC;
                     [self.navigationController pushViewController:previewVC animated:YES];
-                }else{
-                    if (cell.model.subType == HXPhotoModelMediaSubTypePhoto) {
-                        if (self.manager.configuration.useWxPhotoEdit) {
-                            HX_PhotoEditViewController *vc = [[HX_PhotoEditViewController alloc] initWithConfiguration:self.manager.configuration.photoEditConfigur];
-                            vc.photoModel = cell.model;
-                            vc.delegate = self;
-                            vc.onlyCliping = YES;
-                            vc.supportRotation = YES;
-                            vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
-                            vc.modalPresentationCapturesStatusBarAppearance = YES;
-                            [self presentViewController:vc animated:YES completion:nil];
-                        }else {
-                            HXPhotoEditViewController *vc = [[HXPhotoEditViewController alloc] init];
-                            vc.isInside = YES;
-                            vc.model = cell.model;
-                            vc.delegate = self;
-                            vc.manager = self.manager;
-                            vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
-                            vc.modalPresentationCapturesStatusBarAppearance = YES;
-                            [self presentViewController:vc animated:YES completion:nil];
-                        }
-                    }else {
-                        NSInteger currentIndex = [self.previewArray indexOfObject:cell.model];
-                        HXPhotoPreviewViewController *previewVC = [[HXPhotoPreviewViewController alloc] init];
-                        if (HX_IOS9Earlier) {
-                            previewVC.photoViewController = self;
-                        }
-                        previewVC.delegate = self;
-                        previewVC.modelArray = self.previewArray;
-                        previewVC.manager = self.manager;
-                        previewVC.currentModelIndex = currentIndex;
-                        self.navigationController.delegate = previewVC;
-                        [self.navigationController pushViewController:previewVC animated:YES];
-                    }
                 }
             }
         }
